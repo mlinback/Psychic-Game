@@ -1,0 +1,59 @@
+<! DOCTYPE <!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Psychic Game</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+</head>
+
+<body>
+    <link rel="stylesheet" type="text/css" href="assets/css/style.css">
+    <div id="game">
+        <h1> The Psychic Game </h1>
+
+        <p>Guess what letter I'm thinking of!</p>
+        <p>Wins:</p>
+        <p>Losses:</p>
+        <p>Guesses Left:</p>
+        <p>Your Guesses so far:</p>
+    </div>
+
+    <script>
+
+        var alphabet = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"];
+
+        //create variables for tracking wins, loses and guesses.
+        var wins = 0;
+        var loses = 0;
+        var guesses = 10;
+
+        var computerChoice = alphabet[Math.floor(Math.random() * alphabet.length)];
+        console.log(computerChoice);
+
+        //when user presses a key, run the following funciton
+        document.onkeypress = function (event) {
+            var userGuess = event.key;
+
+            if (userGuess === computerChoice) {
+                wins++;
+            }
+            else {
+                guesses--;
+            }
+            if (guesses == 0) {
+                loses++;
+            }
+
+            document.getElementById("wins").innerHTML = "Wins: " + wins;
+            document.getElementById("losses").innerHTML = "Losses: " + losses;
+            document.getElementById("guesses").innerHTML = "Guesses Left: " + guesses;
+        }
+
+    </script>
+
+</body>
+
+</html>
