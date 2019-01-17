@@ -1,56 +1,78 @@
-<! DOCTYPE <!DOCTYPE html>
+<!DOCTYPE <!DOCTYPE html>
 <html>
 
 <head>
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
     <title>Psychic Game</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="assets/css/style.css">
 
 </head>
 
 <body>
-    <link rel="stylesheet" type="text/css" href="assets/css/style.css">
-    <div id="game">
-        <h1> The Psychic Game </h1>
-
-        <p>Guess what letter I'm thinking of!</p>
-        <p>Wins:</p>
-        <p>Losses:</p>
-        <p>Guesses Left:</p>
-        <p>Your Guesses so far:</p>
+    
+    <div class="game">
+        <div>Choose a letter to begin.</div>
+        <div>Guessed letters: <span id="guessed"></span></div>
+        <div>Guess remaining: <span id="guessTotal">10</span></div>
+        <div>Wins: <span id="wins"></span></div>
+        <div>Loses: <span id="loses"></span></div>
     </div>
 
     <script>
 
         var alphabet = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"];
-
-        //create variables for tracking wins, loses and guesses.
+        var letter;
+        var userGuess;
+        var guessTotal = 10;
         var wins = 0;
         var loses = 0;
-        var guesses = 10;
+        var guessedLetters;
 
-        var computerChoice = alphabet[Math.floor(Math.random() * alphabet.length)];
-        console.log(computerChoice);
-
-        //when user presses a key, run the following funciton
-        document.onkeypress = function (event) {
-            var userGuess = event.key;
-
-            if (userGuess === computerChoice) {
-                wins++;
-            }
-            else {
-                guesses--;
-            }
-            if (guesses == 0) {
-                loses++;
-            }
-
-            document.getElementById("wins").innerHTML = "Wins: " + wins;
-            document.getElementById("losses").innerHTML = "Losses: " + losses;
-            document.getElementById("guesses").innerHTML = "Guesses Left: " + guesses;
+        function randomLetter() {
+            letter = alphabet[Math.floor(Math.random() * alphabet.length)];
+            console.log(letter);
+            return letter;
         }
+    
+        function gameRestart() {
+            guessTotal = 10;
+            guessedLetters = " "
+            $("#guessTotal").html(guessTotal);
+            $("#guessedLetters").html(guessedLetters)
+            randomLetter();
+        }
+
+        $(document).ready(function () {
+            randomLetter();
+            document.onkeyup = function guess(event) {
+                var userGuess = event.key;
+                if (userGuess === letter) {
+                    wins++;
+                    $("#wins").html(wins);
+                    $("#result").html("Winner!");
+                    gameRestart();
+                }
+                else if (userGuess !== letter && guessTotal > 1) {
+                    guessTotal--;
+                    guessedLetters = event.key + " ";
+                    $("#guessed").append(guessedLetters)
+                    $("#guessTotal").html(guessTotal);
+                }
+                else {
+                    guessTotal--;
+                    loses++;
+                    $("#guessTotal").html(guessTotal);
+                    $("#loses").html(loses);
+                    $("#result").html("You lose.")
+                    gameRestart();
+                }
+            }
+        })
 
     </script>
 
